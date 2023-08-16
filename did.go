@@ -28,6 +28,8 @@ const (
 	DIDMethodIden3 DIDMethod = "iden3"
 	// DIDMethodPolygonID DID method-name
 	DIDMethodPolygonID DIDMethod = "polygonid"
+	// DIDMethodShib
+	DIDMethodShib DIDMethod = "shib"
 )
 
 // Blockchain id of the network "eth", "polygon", etc.
@@ -38,6 +40,8 @@ const (
 	Ethereum Blockchain = "eth"
 	// Polygon is polygon blockchain network
 	Polygon Blockchain = "polygon"
+	// Shibarium is Shibarium blockchain network
+	Shibarium Blockchain = "shibarium"
 	// UnknownChain is used when it's not possible to retrieve blockchain type from identifier
 	UnknownChain Blockchain = "unknown"
 	// NoChain should be used for readonly identity to build readonly flag
@@ -55,6 +59,10 @@ const (
 
 	// Goerli is ethereum goerli test network
 	Goerli NetworkID = "goerli" // goerli
+
+	// Test is test network
+	Test NetworkID = "test"
+
 	// UnknownNetwork is used when it's not possible to retrieve network from identifier
 	UnknownNetwork NetworkID = "unknown"
 
@@ -66,6 +74,7 @@ const (
 var DIDMethodByte = map[DIDMethod]byte{
 	DIDMethodIden3:     0b00000001,
 	DIDMethodPolygonID: 0b00000010,
+	DIDMethodShib:      0b00000011,
 }
 
 // DIDNetworkFlag is a structure to represent DID blockchain and network id
@@ -90,6 +99,10 @@ var DIDMethodNetwork = map[DIDMethod]map[DIDNetworkFlag]byte{
 
 		{Blockchain: Polygon, NetworkID: Main}:   0b00010000 | 0b00000001,
 		{Blockchain: Polygon, NetworkID: Mumbai}: 0b00010000 | 0b00000010,
+	},
+	DIDMethodShib: {
+		{Blockchain: Shibarium, NetworkID: Main}: 0b01000000 | 0b00000001,
+		{Blockchain: Shibarium, NetworkID: Test}: 0b01000000 | 0b00000010,
 	},
 }
 
