@@ -34,6 +34,8 @@ const (
 	DIDMethodIden3 DIDMethod = "iden3"
 	// DIDMethodPolygonID
 	DIDMethodPolygonID DIDMethod = "polygonid"
+	// DIDMethodShib
+	DIDMethodShib DIDMethod = "shib"
 	// DIDMethodOther any other method not listed before
 	DIDMethodOther DIDMethod = ""
 )
@@ -48,6 +50,8 @@ const (
 	Polygon Blockchain = "polygon"
 	// ZkEVM is zkEVM blockchain network
 	ZkEVM Blockchain = "zkevm"
+	// Shibarium is Shibarium blockchain network
+	Shibarium Blockchain = "shibarium"
 	// UnknownChain is used when it's not possible to retrieve blockchain type from identifier
 	UnknownChain Blockchain = "unknown"
 	// ReadOnly should be used for readonly identity to build readonly flag
@@ -84,6 +88,7 @@ const (
 var DIDMethodByte = map[DIDMethod]byte{
 	DIDMethodIden3:     0b00000001,
 	DIDMethodPolygonID: 0b00000010,
+	DIDMethodShib:      0b00000011,
 	DIDMethodOther:     0b11111111,
 }
 
@@ -120,6 +125,10 @@ var DIDMethodNetwork = map[DIDMethod]map[DIDNetworkFlag]byte{
 
 		{Blockchain: ZkEVM, NetworkID: Main}: 0b00110000 | 0b00000001,
 		{Blockchain: ZkEVM, NetworkID: Test}: 0b00110000 | 0b00000010,
+	},
+	DIDMethodShib: {
+		{Blockchain: Shibarium, NetworkID: Main}: 0b01000000 | 0b00000001,
+		{Blockchain: Shibarium, NetworkID: Test}: 0b01000000 | 0b00000010,
 	},
 	DIDMethodOther: {
 		{Blockchain: UnknownChain, NetworkID: UnknownNetwork}: 0b11111111,

@@ -54,6 +54,44 @@ func TestParseDID(t *testing.T) {
 	require.Equal(t, [2]byte{DIDMethodByte[DIDMethodIden3], 0b0}, id.Type())
 }
 
+func TextCreateNewShibDID(t *testing.T) {
+	typ0, err := BuildDIDType(DIDMethodShib, Shibarium, Main)
+	require.NoError(t, err)
+	genesisState := big.NewInt(1)
+	did, err := NewDIDFromIdenState(typ0, genesisState)
+	require.NoError(t, err)
+
+	didStr := did.String()
+	did2, err := w3c.ParseDID(didStr)
+	require.NoError(t, err)
+
+	require.Equal(t, did.Method, did2.Method)
+	require.Equal(t, did.ID, did2.ID)
+}
+
+func TestParseShibDID(t *testing.T) {
+
+	didStr := "did:shib:shibarium:main:3suph5aVnT3uDycoQqtYjm5eJx2295k3L5XeHXd8Kq"
+
+	did, err := w3c.ParseDID(didStr)
+	require.NoError(t, err)
+
+	id, err := IDFromDID(*did)
+
+	require.NoError(t, err)
+	require.Equal(t, "3suph5aVnT3uDycoQqtYjm5eJx2295k3L5XeHXd8Kq", id.String())
+	method, err := MethodFromID(id)
+	require.NoError(t, err)
+	require.Equal(t, DIDMethodShib, method)
+	blockchain, err := BlockchainFromID(id)
+	require.NoError(t, err)
+	require.Equal(t, Shibarium, blockchain)
+	networkID, err := NetworkIDFromID(id)
+	require.NoError(t, err)
+	require.Equal(t, Main, networkID)
+
+}
+
 func TestDID_MarshalJSON(t *testing.T) {
 	id, err := IDFromString("wyFiV4w71QgWPn6bYLsZoysFay66gKtVa9kfu6yMZ")
 	require.NoError(t, err)
