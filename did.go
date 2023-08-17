@@ -101,6 +101,8 @@ var DIDMethodNetwork = map[DIDMethod]map[DIDNetworkFlag]byte{
 		{Blockchain: Polygon, NetworkID: Mumbai}: 0b00010000 | 0b00000010,
 	},
 	DIDMethodShib: {
+		{Blockchain: NoChain, NetworkID: NoNetwork}: 0b00000000,
+
 		{Blockchain: Shibarium, NetworkID: Main}: 0b01000000 | 0b00000001,
 		{Blockchain: Shibarium, NetworkID: Test}: 0b01000000 | 0b00000010,
 	},

@@ -35,9 +35,26 @@ func TestParseDID(t *testing.T) {
 	require.Equal(t, [2]byte{DIDMethodByte[DIDMethodIden3], 0b0}, did.ID.Type())
 }
 
-func TextCreateNewShibDID(t *testing.T) {
+func TestCreateNewShibDID(t *testing.T) {
 
 	typ0, err := BuildDIDType(DIDMethodShib, Shibarium, Main)
+	require.NoError(t, err)
+
+	genesisState := big.NewInt(1)
+	did, err := DIDGenesisFromIdenState(typ0, genesisState)
+	require.NoError(t, err)
+
+	didStr := did.String()
+	did2, err := ParseDID(didStr)
+	require.NoError(t, err)
+
+	require.Equal(t, did.Method, did2.Method)
+	require.Equal(t, did.ID, did2.ID)
+}
+
+func TestCreateNewShibReadonlyDID(t *testing.T) {
+
+	typ0, err := BuildDIDType(DIDMethodShib, NoChain, NoNetwork)
 	require.NoError(t, err)
 
 	genesisState := big.NewInt(1)
