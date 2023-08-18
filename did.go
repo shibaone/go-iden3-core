@@ -60,8 +60,8 @@ const (
 	// Goerli is ethereum goerli test network
 	Goerli NetworkID = "goerli" // goerli
 
-	// Test is test network
-	Test NetworkID = "test"
+	// puppynet is shib test network
+	PuppyNet NetworkID = "puppynet"
 
 	// UnknownNetwork is used when it's not possible to retrieve network from identifier
 	UnknownNetwork NetworkID = "unknown"
@@ -103,8 +103,8 @@ var DIDMethodNetwork = map[DIDMethod]map[DIDNetworkFlag]byte{
 	DIDMethodShib: {
 		{Blockchain: NoChain, NetworkID: NoNetwork}: 0b00000000,
 
-		{Blockchain: Shibarium, NetworkID: Main}: 0b01000000 | 0b00000001,
-		{Blockchain: Shibarium, NetworkID: Test}: 0b01000000 | 0b00000010,
+		{Blockchain: Shibarium, NetworkID: Main}:     0b01000000 | 0b00000001,
+		{Blockchain: Shibarium, NetworkID: PuppyNet}: 0b01000000 | 0b00000010,
 	},
 }
 

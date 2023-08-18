@@ -62,6 +62,9 @@ func TestCreateNewShibReadonlyDID(t *testing.T) {
 	require.NoError(t, err)
 
 	didStr := did.String()
+
+	require.Equal(t, didStr, "did:shib:3etR8HpjUyg29h5ssFaTghiBezcpmhidcZ6Z5WuNr3")
+
 	did2, err := ParseDID(didStr)
 	require.NoError(t, err)
 
