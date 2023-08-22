@@ -37,14 +37,19 @@ func TestParseDID(t *testing.T) {
 
 func TestCreateNewShibDID(t *testing.T) {
 
-	typ0, err := BuildDIDType(DIDMethodShib, Shibarium, Main)
+	p, _ := BuildDIDType(DIDMethodShib, Shibarium, PuppyNet)
+	require.Equal(t, p[0], uint8(0x03))
+	require.Equal(t, p[1], uint8(0x42))
+
+	typ0, err := BuildDIDType(DIDMethodShib, Shibarium, PuppyNet)
 	require.NoError(t, err)
 
-	genesisState := big.NewInt(1)
+	genesisState, _ := new(big.Int).SetString("0xC46A8845844a1ec44d18C48a7e3a6f919893C728", 0)
 	did, err := DIDGenesisFromIdenState(typ0, genesisState)
 	require.NoError(t, err)
 
 	didStr := did.String()
+	require.Equal(t, didStr, "did:shib:shibarium:puppynet:3tCVcahkPK58AGXwZuSgFsM1dmCGezVuwsciBFVYiZ")
 	did2, err := ParseDID(didStr)
 	require.NoError(t, err)
 
