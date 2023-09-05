@@ -35,6 +35,66 @@ func TestParseDID(t *testing.T) {
 	require.Equal(t, [2]byte{DIDMethodByte[DIDMethodIden3], 0b0}, did.ID.Type())
 }
 
+func TestCreateNewShibDID(t *testing.T) {
+
+	p, _ := BuildDIDType(DIDMethodShib, Shibarium, PuppyNet)
+	require.Equal(t, p[0], uint8(0x03))
+	require.Equal(t, p[1], uint8(0x42))
+
+	typ0, err := BuildDIDType(DIDMethodShib, Shibarium, PuppyNet)
+	require.NoError(t, err)
+
+	genesisState, _ := new(big.Int).SetString("0xC46A8845844a1ec44d18C48a7e3a6f919893C728", 0)
+	did, err := DIDGenesisFromIdenState(typ0, genesisState)
+	require.NoError(t, err)
+
+	didStr := did.String()
+	require.Equal(t, didStr, "did:shib:shibarium:puppynet:3tCVcahkPK58AGXwZuSgFsM1dmCGezVuwsciBFVYiZ")
+	did2, err := ParseDID(didStr)
+	require.NoError(t, err)
+
+	require.Equal(t, did.Method, did2.Method)
+	require.Equal(t, did.ID, did2.ID)
+}
+
+func TestCreateNewShibReadonlyDID(t *testing.T) {
+
+	typ0, err := BuildDIDType(DIDMethodShib, NoChain, NoNetwork)
+	require.NoError(t, err)
+
+	genesisState := big.NewInt(1)
+	did, err := DIDGenesisFromIdenState(typ0, genesisState)
+	require.NoError(t, err)
+
+	didStr := did.String()
+
+	require.Equal(t, didStr, "did:shib:3etR8HpjUyg29h5ssFaTghiBezcpmhidcZ6Z5WuNr3")
+
+	did2, err := ParseDID(didStr)
+	require.NoError(t, err)
+
+	require.Equal(t, did.Method, did2.Method)
+	require.Equal(t, did.ID, did2.ID)
+}
+
+func TestParseShibDID(t *testing.T) {
+
+	didStr := "did:shib:shibarium:main:3suph5aVnT3uDycoQqtYjm5eJx2295k3L5XeHXd8Kq"
+
+	did, err := ParseDID(didStr)
+	require.NoError(t, err)
+
+	require.NoError(t, err)
+	require.Equal(t, "3suph5aVnT3uDycoQqtYjm5eJx2295k3L5XeHXd8Kq", did.ID.String())
+	method := did.Method
+	require.Equal(t, DIDMethodShib, method)
+	blockchain := did.Blockchain
+	require.Equal(t, Shibarium, blockchain)
+	networkID := did.NetworkID
+	require.Equal(t, Main, networkID)
+
+}
+
 func TestDID_MarshalJSON(t *testing.T) {
 	id, err := IDFromString("wyFiV4w71QgWPn6bYLsZoysFay66gKtVa9kfu6yMZ")
 	require.NoError(t, err)
